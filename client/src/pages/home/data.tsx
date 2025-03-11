@@ -1,6 +1,12 @@
+import Header from "@/components/home/header";
 
 export default function Data() {
   return (
-    <div>data</div>
-  )
+    <div>
+      <div>
+        <Header />
+      </div>
+      data
+    </div>
+  );
 }

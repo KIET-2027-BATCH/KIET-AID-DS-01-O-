@@ -1,13 +1,16 @@
-
 import { Link } from "react-router-dom";
 import { ModeToggle } from "../ui/mode-toggle";
+import { Button } from "../ui/button";
+import { CiLogin } from "react-icons/ci";
 
 
 export default function Header() {
   return (
     <header className="bg-white dark:bg-black text-white py-4 shadow-xl">
       <div className="container mx-auto flex justify-between items-center px-4">
-        <h1 className="text-xl font-bold dark:text-white text-black">My Website</h1>
+        <h1 className="text-xl font-bold dark:text-white text-black">
+          My Website
+        </h1>
         <nav className="flex items-center space-x-6">
           <ul className="flex space-x-6 text-[18px] font-medium dark:text-white text-black">
             <li>
@@ -31,7 +34,15 @@ export default function Header() {
               </Link>
             </li>
           </ul>
-          <ModeToggle/>
+          <ModeToggle />
+          <span>
+            <Link to="/login">
+              <Button className=" cursor-pointer">
+                <CiLogin />
+                Signup/Signin
+              </Button>
+            </Link>
+          </span>
         </nav>
       </div>
     </header>

@@ -22,8 +22,6 @@ export default function Home() {
             covered.
           </p>
         </div>
-
-        {/* Background Animation */}
         <BackgroundBeams />
       </div>
     </>
