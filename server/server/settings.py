@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -39,9 +40,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework_simplejwt',
     'corsheaders',
-    'myapp'     
+    'djoser',
+    'myapp'  # Keep only your actual Django apps
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -128,3 +132,36 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Update AUTH_USER_MODEL to refer to the correct app and model
 AUTH_USER_MODEL = "myapp.User"
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+}
+SIMPLE_JWT  ={
+    "AUTH_HEADER_TYPES": (
+        "Bearer",
+        "JWT"
+        ),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=160),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=60), 
+    "SIGNING_KEY": "SIGNING_KEY",
+    "AUTH_HEADER_NAME":"HTTP_AUTHORIZATION",
+    "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
+}
+DJOSER = {
+    "LOGIN_FIELD": 'email',  # Use email as the login field instead of username
+    "USER_CREATE_PASSWORD_RETYPE": True,  # Require password confirmation during registration
+    "USERNAME_CHANGED_EMAIL_CONFIRMATION": True,  # Send email confirmation if username is changed
+    "PASSWORD_CHANGED_EMAIL_CONFIRMATION": True,  # Send email confirmation after password change
+    "SEND_ACTIVATION_EMAIL": True,  # Send an activation email on user registration
+    "SEND_CONFIRMATION_EMAIL": True,  # Send an email after successful account activation
+    "PASSWORD_RESET_CONFIRM_URL": "password/reset/confirm/{uid}/{token}/",  # URL for password reset
+    "ACTIVATION_URL": "activate/{uid}/{token}/",  # URL for account activation
+    "TOKEN_MODEL": None,  # Disable default token model (since we're using JWT)
+    "SERIALIZERS": {
+        "user_create": "myapp.serializers.CustomUserCreateSerializer",  # Custom user creation serializer
+        "user": "myapp.serializers.CustomUserSerializer",  # Custom user serializer
+        "current_user": "myapp.serializers.CustomUserSerializer",  # Current user serializer
+    },
+}
