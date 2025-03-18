@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import "./App.css";
 import Login from "./pages/auth/login";
 import Home from "./pages/home/home";
@@ -7,29 +7,22 @@ import { ThemeProvider } from "./components/ui/theme-provider";
 import Data from "./pages/home/data";
 import Prediction from "./pages/home/prediction";
 import Blog from "./pages/home/blog";
-
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store/store';
 
 function App() {
+  const { user } = useSelector((state: RootState) => state.auth);
+
   return (
     <div>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         <Routes>
-          <Route element={<Login />} path="/login" />
-        </Routes>
-        <Routes>
+          <Route element={user ? <Navigate to="/home" /> : <Login />} path="/login" />
+          <Route element={user ? <Navigate to="/home" /> : <Register />} path="/register" />
           <Route element={<Home />} path="/home" />
-        </Routes>
-        <Routes>
-          <Route element={<Register />} path="/register" />
-        </Routes>
-        <Routes>
-          <Route element={<Data/>} path="/data" />
-        </Routes>
-        <Routes>
-          <Route element={<Prediction/>} path="/prediction" />
-        </Routes>
-        <Routes>
-          <Route element={<Blog/>} path="/blog" />
+          <Route element={<Data />} path="/data" />
+          <Route element={<Prediction />} path="/prediction" />
+          <Route element={<Blog />} path="/blog" />
         </Routes>
       </ThemeProvider>
     </div>

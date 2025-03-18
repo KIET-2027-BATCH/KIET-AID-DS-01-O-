@@ -22,6 +22,7 @@ class UserManager(BaseUserManager):
         user = self.model(
             user_name=user_name,
             email=email,
+            is_active=True  # Set is_active to True by default
         )
         if password:
             user.set_password(password)

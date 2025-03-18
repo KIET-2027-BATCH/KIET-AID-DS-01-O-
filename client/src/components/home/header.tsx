@@ -1,10 +1,23 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ModeToggle } from "../ui/mode-toggle";
 import { Button } from "../ui/button";
 import { CiLogin } from "react-icons/ci";
-
+import { useSelector, useDispatch } from "react-redux";
+import { RootState, AppDispatch } from "@/store/store";
+import { logout } from "@/store/auth";
 
 export default function Header() {
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
+  const { user } = useSelector((state: RootState) => state.auth);
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/login");
+  };
+
+  console.log(user); // Print user data
+
   return (
     <header className="bg-white dark:bg-black text-white py-4 shadow-xl">
       <div className="container mx-auto flex justify-between items-center px-4">
@@ -35,14 +48,20 @@ export default function Header() {
             </li>
           </ul>
           <ModeToggle />
-          <span>
-            <Link to="/login">
-              <Button className=" cursor-pointer">
-                <CiLogin />
-                Signup/Signin
-              </Button>
-            </Link>
-          </span>
+          {user ? (
+            <Button onClick={handleLogout} className="cursor-pointer">
+              Logout
+            </Button>
+          ) : (
+            <span>
+              <Link to="/login">
+                <Button className="cursor-pointer">
+                  <CiLogin />
+                  Signup/Signin
+                </Button>
+              </Link>
+            </span>
+          )}
         </nav>
       </div>
     </header>
