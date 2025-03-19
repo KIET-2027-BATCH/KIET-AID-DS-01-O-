@@ -33,7 +33,7 @@ export default function Header() {
             </li>
             <li>
               <Link to="/data" className="hover:underline">
-                Data
+                Chat
               </Link>
             </li>
             <li>
